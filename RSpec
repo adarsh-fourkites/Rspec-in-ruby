@@ -1,0 +1,101 @@
+RSpec:
+
+- RSpec is a unit test framework for the Ruby programming language.
+- RSpec does not put emphasis on, how the application works but instead on how it behaves, in other words, what the application actually does.
+- by default, rspec only runs files whose names end in “_spec.rb”. Rename string_analyzer_test.rb to string_analyzer_spec.rb.
+
+
+-- Describe --
+- The describe keyword can take a class name and/or string argument.
+- Describe is used to explain what is being worked on. Generally the class name it is worked upon.
+- The block is just a Ruby block designated by the Ruby do/end keywords.
+- By convention, class methods are prefixed with a dot (".add"), and instance methods with a dash ("#add").
+
+-- Context --
+- The idea of context is that it encloses tests of a certain type.
+- The context keyword is not mandatory, but it helps to add more details about the examples that it contains.
+- Eg.,
+context “When passing bad parameters to the foobar() method” 
+context “When passing valid parameters to the foobar() method” 
+context “When testing corner cases with the foobar() method”
+
+
+-- IT --
+-  is used to define an “Example”. An example is basically a test or a test case.
+- IT accepts both class name and string arguments and should be used with a block argument, designated with do/end. 
+-  it is the test case(s) that is/are executed within the describe block.
+- In the case of it, it is customary to only pass a string and block argument. The string argument often uses the word “should” and is meant to describe what specific behavior should happen inside the it block. In other words, it describes that expected outcome is for the Example.
+
+
+RSpec.describe "something" do
+  context "in one context" do
+    it "does one thing" do
+    end
+  end
+
+  context "in another context" do
+    it "does another thing" do
+    end
+  end
+end
+
+
+-- expect --
+- The expect keyword is used to define an “Expectation” in RSpec.
+- This is a verification step where we check, that a specific expected condition has been met.
+- to -> true , not_to -> express the opposite, when you want the Expectation to be false. 
+- Eg.   expect(message).to eql "Hello World!"
+
+- Ruby exposes several different methods for handling equality:
+
+a.equal?(b) # object identity - a and b refer to the same object
+a.eql?(b) # object equivalence - a and b have the same value
+a == b # object equivalence - a and b have the same value with type conversions]
+
+- different use cases of rspec ->> https://www.tutorialspoint.com/rspec/rspec_matchers.htm
+
+OPTIONS IN RSPEC COMMAND -
+https://www.tutorialspoint.com/rspec/rspec_writing_specs.htm
+
+
+--TEST DOUBLES--
+- also known as TEST MOCKS. 
+- A Double is an object which can “stand in” for another object. 
+-  if we have a “dummy” class that behaves like a Student object then our ClassRoom tests will not depend on the Student class. We call this test isolation.
+- If our ClassRoom tests don’t rely on any other classes, then when a test fails, we can know immediately that there is a bug in our ClassRoom class and not some other class.
+- the allow() method provides the method stubs that we need to test the ClassRoom class.
+- We know that the Student class needs to provide a name() method and we use allow() to create a method stub for name ().
+
+You may need to mock chained method calls. For example, given the following code:
+@comments = Comment.where(:post_id => @post.id).order("created_at DESC")
+
+A corresponding spec code can use RSpec’s receive_message_chain:
+allow(Comment).to receive_message_chain(:where, :order) { ... }
+
+-- HOOKS --
+- The before(:each) method is where we define the setup code. When you pass the :each argument, you are instructing the before method to run before each example in your Example Group i.e. the two it blocks inside the describe block in the code above.
+
+
+-- TAGS --
+- RSpec Tags provide an easy way to run specific tests in your spec files. 
+- By default, RSpec will run all tests in the spec files that it runs, but you might only need to run a subset of them.
+- rspec --tag "tagname" filename_spec.rb
+- RSpec Tags makes it very easy to a subset of tests!
+
+
+-- SUBJECTS -- 
+- When your tests are short and uncluttered, it becomes easier to focus on the expected behavior and not on the details of how the tests are written. RSpec Subjects are yet another shortcut allowing you to write simple straightforward tests.
+- RSpec’s subject feature to reduce the amount of code in the example. We do that by moving the person object instantiation into the describe line.
+
+
+-- let --
+- Use let to define a memoized helper method. The value will be cached across multiple calls in the same example but not across examples. Note that let is lazy-evaluated: it is not evaluated until the first time the method it defines is invoked.
+
+-- let! --
+- You can use let! to force the method’s invocation before each example.
+- The difference between let, and let! is that let! is called in an implicit before block. So the result is evaluated and cached before the it block.
+
+** make sure you choose let when you want the lazy evaluation, let! when you do not, and an instance variable… well, I can’t find a good reason to use them in your tests.
+
+
+
